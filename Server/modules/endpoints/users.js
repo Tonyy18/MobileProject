@@ -4,6 +4,6 @@ const sql = require("../sql");
 const com = require("../common");
 const obj = require("../objects");
 router.get("/test", (req, res) => {
-    res.send("testing user endpoint")
+    res.json(req.payload)
 })
 exports.router = router;

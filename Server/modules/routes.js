@@ -5,9 +5,6 @@ const users = require("./endpoints/users");
 const com = require("./common");
 const sql = require("./sql");
 
-router.get("/ping", (req, res) => {
-    res.json(obj.ok())
-})
 router.post("/authenticate", (req, res) => {
     //Login
     const contains = com.objContains(req.body, ["email", "password"]);
@@ -65,7 +62,10 @@ router.post("/users",  (req, res) => {
         })
     });
 });
-router.use(com.jwt_middleware); //Rest are secured with JWT
+router.use(com.jwt_middleware); //Secured endpoints has to be specified after setting the jwt middleware
+router.get("/ping", (req, res) => {
+    res.json(obj.ok())
+})
 router.use("/users", users.router);
 
 exports.router = router
