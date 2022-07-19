@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import {View, Text, StyleSheet, Image, ActivityIndicator} from "react-native";
 import Logo from "./Logo"
 import {EmailInput, PasswordInput, LoginButton, RegisterButton,} from "./inputs"
+import AlertBar from '../common/AlertBar';
 
 const OrLine = () => {
     return(
@@ -18,11 +19,15 @@ class LoginPage extends Component {
         super(props)
         this.state = {
             loginLoader: false,
-            alertText: "error"
+            alertText: "error",
+            alert: false
         }
     }
     loginClick() {
-        this.setState({loginLoader: true})
+        this.setState({loginLoader: true, alert: true, alertText: "Invalid credentials"})
+        setTimeout(() => {
+            this.setState({alert: false})
+        }, 3000);
     }
     registerClick() {
         this.props.navigation.navigate("Register");
@@ -32,6 +37,7 @@ class LoginPage extends Component {
             <View>
                 <View style={styles.pageTop}>
                     <View style={styles.topContainer}>
+                        <AlertBar visible={this.state.alert} text={this.state.alertText} type="error"></AlertBar>
                         <Logo></Logo>
                     </View>
                     <Image source={require("../../assets/png/wave.png")} style={styles.wave} fadeDuration={0}></Image>
