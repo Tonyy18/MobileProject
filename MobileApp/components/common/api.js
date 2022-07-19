@@ -1,19 +1,11 @@
 import Settings from "./Settings";
 import {ping} from "./apiRequests";
 
-function getStatus(callback) {
-    ping((json) => {
-        callback(true);
-    }, (error) => {
-        callback(false)
-    })
+function getStatus() {
+    return ping().then((result) => {return true}).catch((err) => {return err});
 }
 
-function isLoggedIn(success, error) {
-    ping((json) => {
-        success(json.code == 200);
-    }, (error) => {
-        error()
-    })
+function isLoggedIn() {
+    return ping().then((result) => {return result == 200}).catch((err) => {return err});
 }
 export {getStatus, isLoggedIn};

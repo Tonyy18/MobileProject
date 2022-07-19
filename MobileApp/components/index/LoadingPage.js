@@ -6,29 +6,22 @@ class LoadingPage extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            loggedin: false,
-            online: false,
             text: "Loading ..."
         }
     }
     componentDidMount() {
-        isLoggedIn((login) => {
+        isLoggedIn().then((result) => {
+            if(results == false) {
+                //Not logged in yet
+                this.props.navigation.navigate("Login");
+            }
+        }).catch((err) => {
             this.setState({
-                loggedIn: login,
-                online: true
-            })
-        }, (error) => {
-            this.setState({
-                loggedIn: false,
-                online: false,
                 text: "Services are currently offline"
             })
         })
     }
     render() {
-        if(this.state.online) {
-            this.props.navigation.navigate("Login");
-        }
         return (
             <View style={styles.container}><Text style={styles.text}>{this.state.text}</Text></View>
         )

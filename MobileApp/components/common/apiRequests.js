@@ -1,14 +1,14 @@
 import Settings from "./Settings";
 
-function getRequest(url, success, error) {
-    fetch(url)
+function getRequest(url) {
+    return fetch(url)
     .then((response) => response.json())
-    .then(success)
-    .catch(error)
+    .then((json) => {return json})
+    .catch((error) => {throw error})
 }
 
 function ping(success, error) {
-    getRequest(Settings.url + "/api/ping", success, error)
+    return getRequest(Settings.url + "/api/ping").then((json) => {return json}).catch((error) => {return error});
 }
 
 export {ping}
