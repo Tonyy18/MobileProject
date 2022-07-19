@@ -51,11 +51,11 @@ const PasswordInput = (props) => {
     return <Input type="password" placeholder={props.placeholder}></Input>
 }
 
-const Button = (props) => {
-    return <LoginButton title={props.title}></LoginButton>
+const LoginButton = (props) => {
+    return <Button title={props.title} {...props}></Button>
 }
 
-const LoginButton = (props) => {
+const Button = (props) => {
     let content = <Text style={{color: "white"}}>{props.title}</Text>
     if(props.loader) {
         content = <ActivityIndicator color="#ffffff"></ActivityIndicator>

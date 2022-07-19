@@ -1,7 +1,8 @@
 import React, {Component} from "react";
-import {View, Text, StyleSheet, Image, ActivityIndicator} from "react-native";
+import {View, Text, StyleSheet, Image, Alert, Fetch} from "react-native";
 import Logo from "./Logo"
-import {EmailInput, PasswordInput, LoginButton, RegisterButton,Button} from "./inputs"
+import {EmailInput, PasswordInput, LoginButton, RegisterButton, Button} from "./inputs"
+import Settings from "../common/Settings";
 
 const Title = () => {
     return (
@@ -10,6 +11,17 @@ const Title = () => {
 }
 
 class RegisterPage extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            loader: false
+        }
+    }
+    onClick() {
+        this.setState({
+            loader: true
+        })
+    }
     render() {
         return (
             <View style={styles.container}>
@@ -18,7 +30,7 @@ class RegisterPage extends Component {
                     <EmailInput placeholder="Email"></EmailInput>
                     <PasswordInput placeholder="Password"></PasswordInput>
                     <PasswordInput placeholder="Password again"></PasswordInput>
-                    <Button title="Register"></Button>
+                    <Button title="Register" onPress={() => {this.onClick()}} loader={this.state.loader}></Button>
                 </View>
             </View>
         )
