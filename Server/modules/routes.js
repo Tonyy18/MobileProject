@@ -5,8 +5,10 @@ const users = require("./endpoints/users");
 const com = require("./common");
 const sql = require("./sql");
 
+const requests = 0;
 router.use((req, res, next) => {
-    console.log("New request")
+    requests++;
+    console.log("New request " + requests)
     next();
 })
 router.post("/authenticate", (req, res) => {
@@ -22,7 +24,7 @@ router.post("/authenticate", (req, res) => {
             return;
         }
         results = results[0]
-        const hashed = results["PASSWORD"];
+        const hashed = results["password"];
         com.passwords_equal(req.body.password, hashed, (equals) => {
             if(equals) {
                 //Creating jwt
@@ -33,13 +35,13 @@ router.post("/authenticate", (req, res) => {
                 res.json(obj.ok(token));
                 return
             }
-            res.json(obj.unauthorized("Invalid credentials"))
+            res.json(obj.unauthorized("Invalid credentials"));
         })
     })
 })
 router.post("/users",  (req, res) => {
     //Registering a user
-    const contains = com.objContains(req.body, ["email", "password"]);
+    const contains = com.objContains(req.body, ["email", "password", "name"]);
     if(contains !== true) {
         res.json(obj.bad_request(contains + " was missing"));
         return;

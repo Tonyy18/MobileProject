@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
         paddingLeft: 15,
         paddingRight: 15,
         alignItems: "center",
+        zIndex: 1000
     },
     text: {
         color: "white",
