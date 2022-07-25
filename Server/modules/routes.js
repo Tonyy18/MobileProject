@@ -41,17 +41,29 @@ router.post("/authenticate", (req, res) => {
 })
 router.post("/users",  (req, res) => {
     //Registering a user
-    const contains = com.objContains(req.body, ["email", "password", "name"]);
+    const contains = com.objContains(req.body, ["email", "password", "firstName", "lastName"]);
     if(contains !== true) {
+        //Check that all fields are present
         res.json(obj.bad_request(contains + " was missing"));
         return;
     }
-    pass_valid = com.Validators.password(req.body.password);
+
+    const firstNameValid = com.Validators.firstName(req.body.firstName);
+    const lastNameValid = com.Validators.lastName(req.body.lastName);
+    if(firstNameValid !== true) {
+        res.json(obj.bad_request(firstNameValid));
+        return;
+    }
+    if(lastNameValid !== true) {
+        res.json(obj.bad_request(lastNameValid));
+        return;
+    }
+    const pass_valid = com.Validators.password(req.body.password);
     if(pass_valid !== true) {
         res.json(obj.bad_request(pass_valid));
         return;
     }
-    email_valid = com.Validators.email(req.body.email);
+    const email_valid = com.Validators.email(req.body.email);
     if(email_valid !== true) {
         res.json(obj.bad_request(email_valid));
         return;

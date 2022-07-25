@@ -1,7 +1,10 @@
 import React, {Component} from "react";
 import {View, Text, StyleSheet, Image, Fetch, Pressable} from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {Button} from "../index/inputs"
+import {Button} from "../components/inputs"
+import Settings from "../common/Settings"
+import { postRequest } from "./requests";
+import {ping} from "./server";
 
 const setToken = async (token) => {
     try {
@@ -20,6 +23,25 @@ const getToken = async () => {
       return null;
     }
 }
+function login(data) {
+    return postRequest(Settings.url + "/api/authenticate", data).then((json) => {
+        if(json.code == 200) {
+            return setToken(json.data).then(() => {
+            	return json;
+            }).catch((err) => {
+            	return {
+					code: 409,
+					data: "An error ocurred, code \"login409\""
+				}
+            })
+        }
+
+    }).catch((error) => {throw error});
+}
+function isLoggedIn() {
+    return ping().then((result) => {return result.code == 200}).catch((err) => {throw err});
+}
+
 class Authenticated extends Component {
   constructor(props) {
     super(props)
@@ -52,4 +74,4 @@ class MainView extends Authenticated {
     }
 }
 export default MainView;
-export {getToken, setToken, Authenticated}
+export {getToken, setToken, Authenticated, login, isLoggedIn}

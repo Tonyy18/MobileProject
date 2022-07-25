@@ -1,6 +1,7 @@
 import React, {Component, useEffect, useState} from "react";
 import {View, Text, StyleSheet, Image, Alert, Fetch} from "react-native";
-import {isLoggedIn} from "../common/api";
+import {isLoggedIn} from "../api/auth";
+import {getCurrentPosition} from "../api/geo";
 
 class LoadingPage extends Component {
     constructor(props) {
@@ -21,7 +22,7 @@ class LoadingPage extends Component {
         }).catch((err) => {
             this.setState({
                 error: true,
-                text: "Services are currently offline"
+                text: "Services are currently offline\nPlease try again later"
             })
         })
     }
@@ -58,7 +59,9 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 17,
-        color: "white"
+        color: "white",
+        textAlign: "center",
+        lineHeight: 35
     }
 })
 export default LoadingPage;

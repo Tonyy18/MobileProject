@@ -50,6 +50,24 @@ const objContains = (data,fields) => {
 
 var email_validator = require("email-validator");
 class Validators {
+    firstName(text) {
+        if(text.length < 1) {
+            return "First name is too short";
+        }
+        if(text.length > 50) {
+            return "First name is too long";
+        }
+        return true;
+    }
+    lastName(text) {
+        if(text.length < 1) {
+            return "Last name is too short";
+        }
+        if(text.length > 50) {
+            return "Last name is too long";
+        }
+        return true;
+    }
     email(text) {
         const valid = email_validator.validate(text);
         if(text.length > 60) {

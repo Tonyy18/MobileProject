@@ -1,10 +1,8 @@
 import React, {Component} from "react";
 import {View, Text, StyleSheet, Image, Fetch} from "react-native";
-import Logo from "./Logo"
-import {EmailInput, PasswordInput, NameInput, Button} from "./inputs"
-import Settings from "../common/Settings";
-import {createUser} from "../common/api";
-import AlertBar from '../common/AlertBar';
+import {EmailInput, PasswordInput, NameInput, Button} from "../components/inputs"
+import {createUser} from "../api/user";
+import AlertBar from '../components/AlertBar';
 const email_validator = require("email-validator");
 
 const Title = () => {
@@ -21,16 +19,39 @@ class RegisterPage extends Component {
             emailText: "",
             passwordText: "",
             password2Text: "",
-            nameText: "",
+            firstNameText: "",
+            lastNameText: "",
             errorText: null,
         }
     }
     onClick() {
+        const firstName = this.state.firstNameText.trim();
+        const lastName = this.state.lastNameText.trim();
         const email = this.state.emailText.trim();
         const password = this.state.passwordText;
-        if(!email_validator.validate(email)) {
+        if(firstName.length < 1) {
+            this.setState({
+                errorText: "First name is required"
+            })
+        } else if(firstName.length > 50) {
+            this.setState({
+                errorText: "First name is too long"
+            })
+        } else if(lastName.length < 1) {
+            this.setState({
+                errorText: "Last name is required"
+            })
+        } else if(lastName.length > 50) {
+            this.setState({
+                errorText: "Last name is too long"
+            })
+        } else if(!email_validator.validate(email)) {
             this.setState({
                 errorText: "Invalid email"
+            })
+        } else if (this.state.emailText.length > 60) {
+            this.setState({
+                errorText: "Email is too long"
             })
         } else if(password.length < 5) {
             this.setState({
@@ -40,15 +61,13 @@ class RegisterPage extends Component {
             this.setState({
                 errorText: "Password is too long"
             })
-         } else if (this.state.emailText.length > 60) {
-            this.setState({
-                errorText: "Email is too long"
-            })
-        } else {
+         } else {
             this.setState({
                 loader: true
             })
             createUser({
+                firstName: firstName,
+                lastName: lastName,
                 email: this.state.emailText,
                 password: this.state.passwordText
             }).then((result) => {
@@ -79,7 +98,8 @@ class RegisterPage extends Component {
                 <AlertBar visible={this.state.errorText != null} text={this.state.errorText} type="notice"></AlertBar>
                 <View style={styles.content}>
                     <Title></Title>
-                    <NameInput placeholder="Name" value={this.state.nameText} onChangeText={text => this.setState({nameText:text})}></NameInput>
+                    <NameInput placeholder="First Name" value={this.state.firstNameText} onChangeText={text => this.setState({firstNameText:text})}></NameInput>
+                    <NameInput placeholder="Last Name" value={this.state.lastNameText} onChangeText={text => this.setState({lastNameText:text})}></NameInput>
                     <EmailInput placeholder="Email" value={this.state.emailText} onChangeText={text => this.setState({emailText:text})}></EmailInput>
                     <PasswordInput placeholder="Password" value={this.state.passwordText} onChangeText={text => this.setState({passwordText:text})}></PasswordInput>
                     <PasswordInput placeholder="Password again" value={this.state.password2Text} onChangeText={text => this.setState({password2Text:text})}></PasswordInput>

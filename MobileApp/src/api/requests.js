@@ -1,5 +1,5 @@
-import Settings from "./Settings";
-import {getToken} from "../auth/authentication"
+import Settings from "../common/Settings";
+import {getToken} from "./auth"
 
 function request(url, data) {
     return getToken().then((token) => {
@@ -34,8 +34,4 @@ function postRequest(url, _data) {
     .catch((error) => {throw error})
 }
 
-function ping() {
-    return getRequest(Settings.url + "/api/ping").then((json) => {return json}).catch((error) => {throw error});
-}
-
-export {ping, getRequest, postRequest}
+export {getRequest, postRequest}

@@ -54,9 +54,6 @@ const PasswordInput = (props) => {
 const NameInput = (props) => {
     return <Input type="name" {...props}></Input>
 }
-const LoginButton = (props) => {
-    return <Button title={props.title} {...props}></Button>
-}
 
 const Button = (props) => {
     let content = <Text style={{color: "white"}}>{props.title}</Text>
@@ -70,7 +67,7 @@ const Button = (props) => {
     )
 }
 
-const RegisterButton = (props) => {
+const WhiteButton = (props) => {
     let content = <Text style={{color: "#C1C1C1"}}>{props.title}</Text>
     if(props.loader) {
         content = <ActivityIndicator color="#C1C1C1"></ActivityIndicator>
@@ -122,5 +119,5 @@ const styles = StyleSheet.create({
         borderBottomColor: "#4CABFF",
     }
 })
-export {EmailInput, PasswordInput, LoginButton, RegisterButton, Button, NameInput};
+export {EmailInput, PasswordInput, WhiteButton, Button, NameInput};
 export default Input;

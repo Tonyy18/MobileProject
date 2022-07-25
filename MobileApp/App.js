@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';;
-import LoginPage from "./components/index/LoginPage";
-import RegisterPage from "./components/index/RegisterPage";
-import LoadingPage from "./components/index/LoadingPage";
-import MainView from "./components/auth/authentication";
+import LoginPage from "./src/views/LoginPage";
+import RegisterPage from "./src/views/RegisterPage";
+import LoadingPage from "./src/views/LoadingPage";
+import MainView from "./src/api/auth";
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
