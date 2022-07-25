@@ -1,19 +1,43 @@
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const bcrypt = require('bcryptjs');
-
+const obj = require("./objects")
 const get_jwt = (payload) => {
+    //jwt.sign(payload, process.env.JWT_KEY, {expiresIn: "10000"});
     let token = jwt.sign(payload, process.env.JWT_KEY);
     return token
 }
-const verify_jwt = (token) => {
+const verify_jwt = (token, success = () =>{}, error = () => {}) => {
     try {
         let payload = jwt.verify(token, process.env.JWT_KEY);
-        return payload;
+        success(payload);
     } catch(err) {
-        return err;
+        error(err);
     }
 }
+const jwt_middleware = (req, res, next) => {
+    //Check the valid jwt from authorization header
+    //Before any secured api method
+    let auth = req.get("authorization")
+    if(!auth) {
+        res.json(obj.unauthorized());
+        return;
+    }
+    auth = auth.split(" ")
+    if(auth.length != 2 || auth[0].toLowerCase() != "bearer") {
+        res.json(obj.unauthorized());
+        return;
+    }
+    auth = auth[1]
+    verify_jwt(auth, (payload) => {
+        req.payload = payload;
+        next();
+    }, (error) => {
+        res.json(obj.unauthorized());
+    })
+};
+exports.jwt_middleware = jwt_middleware;
+exports.verify_jwt = verify_jwt;
 exports.get_jwt = get_jwt;
 
 const objContains = (data,fields) => {
@@ -28,6 +52,9 @@ var email_validator = require("email-validator");
 class Validators {
     email(text) {
         const valid = email_validator.validate(text);
+        if(text.length > 60) {
+            return "Email is too long";
+        }
         if(!valid) {
             return "Invalid email";
         }

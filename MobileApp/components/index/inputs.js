@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {View, Text, StyleSheet, Image, TextInput, Pressable, ActivityIndicator} from "react-native";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faAlignJustify, faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
+import { faAlignJustify, faEnvelope, faLock, faUser } from "@fortawesome/free-solid-svg-icons";
 
 
 class Input extends Component {
@@ -14,7 +14,6 @@ class Input extends Component {
         }
     }
     render() {
-        let text = this.state.text;
         let parentClasses = [styles.parent];
         let childClasses = [styles.input];
         let iconClasses = [styles.icon];
@@ -29,33 +28,37 @@ class Input extends Component {
         if(this.props.type == "password") {
             this.icon = <FontAwesomeIcon style={iconClasses} icon={faLock}></FontAwesomeIcon>
         }
+        if(this.props.type == "name") {
+            this.icon = <FontAwesomeIcon style={iconClasses} icon={faUser}></FontAwesomeIcon>
+        }
         return (
             <View style={parentClasses}>
                 {this.icon}
-                <TextInput placeholder={this.props.placeholder}
+                <TextInput
                 secureTextEntry={this.props.type == "password"}
-                value={text}
                 style={childClasses}
-                onChangeText={text => this.setState({text:text})}
                 onFocus={() => this.setState({focused: true})}
-                onBlur={() => this.setState({focused: false})}>
+                onBlur={() => this.setState({focused: false})}
+                {...this.props}>
                 </TextInput>
             </View>
         )
     }
 }
 const EmailInput = (props) => {
-    return <Input type="email" placeholder={props.placeholder}></Input>
+    return <Input type="email" {...props}></Input>
 }
 const PasswordInput = (props) => {
-    return <Input type="password" placeholder={props.placeholder}></Input>
+    return <Input type="password" {...props}></Input>
+}
+const NameInput = (props) => {
+    return <Input type="name" {...props}></Input>
+}
+const LoginButton = (props) => {
+    return <Button title={props.title} {...props}></Button>
 }
 
 const Button = (props) => {
-    return <LoginButton title={props.title}></LoginButton>
-}
-
-const LoginButton = (props) => {
     let content = <Text style={{color: "white"}}>{props.title}</Text>
     if(props.loader) {
         content = <ActivityIndicator color="#ffffff"></ActivityIndicator>
@@ -111,12 +114,13 @@ const styles = StyleSheet.create({
         marginBottom: 20
     },
     input: {
-        flexGrow: 1
+        flexGrow: 1,
+        color: "black"
     },
     inputFocus: {
         color: "#4CABFF",
         borderBottomColor: "#4CABFF",
     }
 })
-export {EmailInput, PasswordInput, LoginButton, RegisterButton, Button};
+export {EmailInput, PasswordInput, LoginButton, RegisterButton, Button, NameInput};
 export default Input;

@@ -1,7 +1,10 @@
 import React, {Component} from "react";
-import {View, Text, StyleSheet, Image, ActivityIndicator} from "react-native";
+import {View, Text, StyleSheet, Image, ActivityIndicator, Alert} from "react-native";
 import Logo from "./Logo"
 import {EmailInput, PasswordInput, LoginButton, RegisterButton,} from "./inputs"
+import AlertBar from '../common/AlertBar';
+import {login} from "../common/api";
+import {setToken} from "../auth/authentication";
 
 const OrLine = () => {
     return(
@@ -18,11 +21,37 @@ class LoginPage extends Component {
         super(props)
         this.state = {
             loginLoader: false,
-            alertText: "error"
+            alertText: null,
+            email: "",
+            password: ""
         }
     }
     loginClick() {
-        this.setState({loginLoader: true})
+        this.setState({focus:false})
+        const email = this.state.email;
+        const password = this.state.password;
+        login({email: email, password:password})
+        .then((result) => {
+            if(result.code == 200) {
+                //Login
+                setToken(result.data).then(() => {
+                    this.props.navigation.navigate("Loading")
+                }).catch(() => {
+                    this.setState({
+                        alertText: "Error ocurred"
+                    })
+                })
+            } else {
+                this.setState({
+                    alertText: result.data
+                })
+            }
+        }).catch((err) => {
+            console.error(err)
+        })
+        setTimeout(() => {
+            this.setState({alertText: null})
+        }, 3000);
     }
     registerClick() {
         this.props.navigation.navigate("Register");
@@ -32,14 +61,15 @@ class LoginPage extends Component {
             <View>
                 <View style={styles.pageTop}>
                     <View style={styles.topContainer}>
+                        <AlertBar visible={this.state.alertText != null} text={this.state.alertText} type="error"></AlertBar>
                         <Logo></Logo>
                     </View>
                     <Image source={require("../../assets/png/wave.png")} style={styles.wave} fadeDuration={0}></Image>
                 </View>
                 <View style={styles.pageBottom}>
                     <View style={styles.bottomContainer}>
-                        <EmailInput placeholder="Email"></EmailInput>
-                        <PasswordInput placeholder="Password"></PasswordInput>
+                        <EmailInput placeholder="Email" value={this.state.email} onChangeText={text => this.setState({email: text})}></EmailInput>
+                        <PasswordInput placeholder="Password" value={this.state.password} onChangeText={text => this.setState({password: text})}></PasswordInput>
                         <LoginButton title="Login" loader={this.state.loginLoader} onPress={() => {this.loginClick()}}></LoginButton>
                         <OrLine></OrLine>
                         <RegisterButton title="Register" onPress={() => {this.registerClick()}}></RegisterButton>

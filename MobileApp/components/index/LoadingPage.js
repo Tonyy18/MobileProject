@@ -1,0 +1,64 @@
+import React, {Component, useEffect, useState} from "react";
+import {View, Text, StyleSheet, Image, Alert, Fetch} from "react-native";
+import {isLoggedIn} from "../common/api";
+
+class LoadingPage extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            error: false,
+            text: "Connecting ..."
+        }
+    }
+    checkLogin() {
+        isLoggedIn().then((result) => {
+            if(result == false) {
+                //Not logged in yet
+                this.props.navigation.navigate("Login");
+            } else {
+                this.props.navigation.navigate("Authenticated")
+            }
+        }).catch((err) => {
+            this.setState({
+                error: true,
+                text: "Services are currently offline"
+            })
+        })
+    }
+    componentDidMount() {
+        this.props.navigation.addListener("focus", () => {
+            this.checkLogin();
+        })
+    }
+    render() {
+        let image = "";
+        if(this.state.error == false) {
+            image = <Image source={require('../../assets/gif/loader.gif')} style={styles.gif}/>
+        }
+        return (
+            <View style={styles.container}>
+                {image}
+                <Text style={styles.text}>{this.state.text}</Text>
+            </View>
+        )
+    }
+}
+const styles = StyleSheet.create({
+    gif: {
+        height: 50,
+        width: 50,
+        marginBottom: 20
+    },
+    container: {
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100%",
+        backgroundColor: "#4CABFF"
+    },
+    text: {
+        fontSize: 17,
+        color: "white"
+    }
+})
+export default LoadingPage;
