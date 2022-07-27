@@ -12,7 +12,7 @@ function request(url, data) {
         return fetch(url, data)
         .then((response) => {return response.json()})
         .then((json) => {return json})
-        .catch((error) => {throw error})
+        .catch((error) => {console.error(err); throw error})
     }).catch((error) => {
         throw error;
     })

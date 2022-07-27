@@ -1,8 +1,8 @@
 import React, {Component} from "react";
 import {View, Text, StyleSheet} from "react-native";
 
-const Logo = () => {
-    return <Text style={styles.logo}>Jennys App</Text>
+const Logo = (props) => {
+    return <Text style={styles.logo} {...props}>Jennys App</Text>
 }
 
 const styles = StyleSheet.create({

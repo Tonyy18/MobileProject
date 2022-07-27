@@ -5,12 +5,6 @@ const users = require("./endpoints/users");
 const com = require("./common");
 const sql = require("./sql");
 
-const requests = 0;
-router.use((req, res, next) => {
-    requests++;
-    console.log("New request " + requests)
-    next();
-})
 router.post("/authenticate", (req, res) => {
     //Login
     const contains = com.objContains(req.body, ["email", "password"]);

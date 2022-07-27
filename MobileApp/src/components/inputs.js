@@ -1,8 +1,6 @@
 import React, {Component} from "react";
 import {View, Text, StyleSheet, Image, TextInput, Pressable, ActivityIndicator} from "react-native";
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faAlignJustify, faEnvelope, faLock, faUser } from "@fortawesome/free-solid-svg-icons";
-
+import { UserIcon, LockIcon, MailIcon } from "./icons";
 
 class Input extends Component {
     constructor(props) {
@@ -23,13 +21,13 @@ class Input extends Component {
             iconClasses.push(styles.inputFocus);
         }
         if(this.props.type == "email") {
-            this.icon = <FontAwesomeIcon style={iconClasses} icon={faEnvelope}></FontAwesomeIcon>
+            this.icon = <MailIcon style={iconClasses}></MailIcon>
         }
         if(this.props.type == "password") {
-            this.icon = <FontAwesomeIcon style={iconClasses} icon={faLock}></FontAwesomeIcon>
+            this.icon = <LockIcon style={iconClasses}></LockIcon>
         }
         if(this.props.type == "name") {
-            this.icon = <FontAwesomeIcon style={iconClasses} icon={faUser}></FontAwesomeIcon>
+            this.icon = <UserIcon style={iconClasses}></UserIcon>
         }
         return (
             <View style={parentClasses}>

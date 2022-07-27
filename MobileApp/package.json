@@ -19,13 +19,12 @@
     "@react-native-community/geolocation": "^2.1.0",
     "@react-navigation/native-stack": "^6.7.0",
     "email-validator": "^2.0.4",
-    "react": "18.0.0",
-    "react-native": "0.69.1",
-    "react-native-cli": "^2.0.1",
+    "react-native": "^0.69.3",
     "react-native-fade-in-out": "^1.0.6",
     "react-native-reanimated": "^2.9.1",
     "react-native-safe-area-context": "^4.3.1",
     "react-native-screens": "^3.15.0",
+    "react-native-snap-carousel": "^3.9.1",
     "react-native-svg": "^12.3.0"
   },
   "devDependencies": {

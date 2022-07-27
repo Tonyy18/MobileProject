@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {View, Text, StyleSheet, Image, Fetch, Pressable} from "react-native";
+import {View, Text, StyleSheet, Image, Fetch, Pressable, Alert} from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Button} from "../components/inputs"
 import Settings from "../common/Settings"
@@ -23,6 +23,11 @@ const getToken = async () => {
       return null;
     }
 }
+const isTokenSet = () => {
+  return getToken().then((token) => {
+    return token != "" && token != null
+  }).catch((error) => {throw error;})
+}
 function login(data) {
     return postRequest(Settings.url + "/api/authenticate", data).then((json) => {
         if(json.code == 200) {
@@ -30,48 +35,52 @@ function login(data) {
             	return json;
             }).catch((err) => {
             	return {
-					code: 409,
-					data: "An error ocurred, code \"login409\""
-				}
+                code: 409,
+                data: "An error ocurred, code \"login409\""
+              }
             })
         }
 
     }).catch((error) => {throw error});
 }
+function logout() {
+  return setToken("").then(() => {
+    return true;
+  })
+}
 function isLoggedIn() {
-    return ping().then((result) => {return result.code == 200}).catch((err) => {throw err});
+    return isTokenSet().then((result) => {
+      if(result) {
+        return ping().then((result) => {return result.code == 200}).catch((err) => {throw err});
+      }
+      return result
+    })
 }
 
 class Authenticated extends Component {
   constructor(props) {
     super(props)
   }
-  componentDidMount() {
-    getToken().then((token) => {
-        console.log(token)
-    })
-  }
   logout() {
-    setToken("").then(() => {
-        this.props.navigation.navigate("Loading")
-    })
+    Alert.alert(
+      "Logout",
+      "Are you sure you want to logout?",
+      [
+        {
+          text: "Yes",
+          onPress: () => {
+            logout().then(() => {
+              this.props.navigation.navigate("Loading")
+            })
+          }
+        },
+        {
+          text: "No"
+        }
+      ]
+    )
   }
 }
-class MainView extends Authenticated {
-    constructor(props) {
-        super(props)
-    }
-    onClick() {
-        this.logout();
-    }
-    render() {
-        return (
-            <View>
-              <Text>Logged in</Text>
-              <Button title="Log out" onPress={() => {this.onClick()}}></Button>
-            </View>
-        )
-    }
-}
-export default MainView;
-export {getToken, setToken, Authenticated, login, isLoggedIn}
+
+export default Authenticated;
+export {getToken, setToken, Authenticated, login, isLoggedIn, logout, isTokenSet}
