@@ -11,6 +11,30 @@ const profiles = [
     {
         "id": 2,
         "image": "https://bestigcaptions.com/wp-content/uploads/2022/02/Attrative-Attitude-Whatsapp-Profile-Picture.jpg"
+    },
+    {
+        "id": 3,
+        "image": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80"
+    },
+    {
+        "id": 4,
+        "image": "https://images.pexels.com/photos/1704488/pexels-photo-1704488.jpeg?cs=srgb&dl=pexels-suliman-sallehi-1704488.jpg&fm=jpg"
+    },
+    {
+        "id": 5,
+        "image": "https://miro.medium.com/max/785/0*Ggt-XwliwAO6QURi.jpg"
+    },
+    {
+        "id": 6,
+        "image": "https://i.pinimg.com/564x/b8/03/78/b80378993da7282e58b35bdd3adbce89.jpg"
+    },
+    {
+        "id": 7,
+        "image": "https://i.pinimg.com/736x/08/3a/68/083a68071698506a2e71a55a638514a0.jpg"
+    },
+    {
+        "id": 8,
+        "image": "https://i1.wp.com/i.pinimg.com/736x/f1/9d/1e/f19d1e7c77fda80079cb7da62872f44a.jpg"
     }
 ]
 const width = Dimensions.get("window").width;
@@ -32,11 +56,11 @@ const Nope = (props) => {
         padding: 10
     }} {...props}>NOPE</Text>
 }
-class Card extends Component {
+class Swiper extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentIndex: 0
+            profiles: profiles
         }
         this.position = new Animated.ValueXY();
         this.rotate = this.position.x.interpolate({
@@ -44,16 +68,6 @@ class Card extends Component {
             outputRange: ['-10deg', '0deg', '10deg'],
             extrapolate: "clamp"
         })
-        this.styles = {
-            ...styles.card
-        }
-        if(this.props.move) {
-            this.styles.transform = [{
-                rotate: this.rotate
-            },
-            ...this.position.getTranslateTransform()
-            ]
-        }
         this.likeOpacity = this.position.x.interpolate({
             inputRange: [-width / 2, 0, width / 2],
             outputRange: [0, 0, 1],
@@ -74,21 +88,23 @@ class Card extends Component {
             onPanResponderRelease: (evt, gestureState) => {
                 if (gestureState.dx > 120) {
                     Animated.spring(this.position, {
-                      toValue: { x: width + 100, y: gestureState.dy },
+                      toValue: { x: width + 50, y: gestureState.dy },
                       useNativeDriver: true
-                    }).start(() => {
-                      this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
+                    }).start()
+                    this.state.profiles.shift()
+                    this.setState({ profiles: this.state.profiles}, () => {
+                        console.log("LIKE")
                         this.position.setValue({ x: 0, y: 0 })
-                      })
                     })
                 } else if (gestureState.dx < -120) {
                     Animated.spring(this.position, {
-                      toValue: { x: -width - 100, y: gestureState.dy },
+                      toValue: { x: -width - 50, y: gestureState.dy },
                       useNativeDriver: true
-                    }).start(() => {
-                      this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
+                    }).start()
+                    this.state.profiles.shift()
+                    this.setState({ profiles: this.state.profiles }, () => {
+                        console.log("NOPE")
                         this.position.setValue({ x: 0, y: 0 })
-                      })
                     })
                 } else {
                     Animated.spring(this.position, {
@@ -101,57 +117,52 @@ class Card extends Component {
         })
     }
     render() {
-        if(this.props.move) {
-            return(
-                <Animated.View style={this.styles} {...this.PanResponder.panHandlers}>
-                    <Animated.View style={{
-                        opacity: this.likeOpacity,
-                        transform: [{rotate: "-30deg"}],
-                        position: "absolute",
-                        top: 50,
-                        left: 40,
-                        zIndex: 1000
-                    }}>
-                        <Like></Like>
-                    </Animated.View>
-                    <Animated.View style={{
-                        opacity: this.nopeOpacity,
-                        transform: [{rotate: "30deg"}],
-                        position: "absolute",
-                        top: 50,
-                        right: 40,
-                        zIndex: 1000
-                    }}>
-                        <Nope></Nope>
-                    </Animated.View>
-                    <Image style={styles.image} source={{uri: this.props.image}}></Image>
-                </Animated.View>
-            )
-        } else {
-            return(
-                <Animated.View style={this.styles}>
-                    <Image style={styles.image} source={{uri: this.props.image}}></Image>
-                </Animated.View>
-            )
-        }
-    }
-}
-class Swiper extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            swipeIndex: 0
-        }
-    }
-    render() {
-
         return (
             <View style={styles.container}>
                 <View style={styles.cardDimensions}>
                     {profiles.map((el, i) => {
-                        return (
-                            <Card key={i} {...el} move={i==this.state.swipeIndex}></Card>
-                        )
+                        if(i==0) {
+                            let style = {
+                                ...styles.card
+                            }
+                            style.transform = [{
+                                rotate: this.rotate
+                            },
+                            ...this.position.getTranslateTransform()
+                            ]
+                            console.log(el.image)
+                            return(
+                                <Animated.View style={style} {...this.PanResponder.panHandlers} key={i}>
+                                    <Animated.View style={{
+                                        opacity: this.likeOpacity,
+                                        transform: [{rotate: "-30deg"}],
+                                        position: "absolute",
+                                        top: 50,
+                                        left: 40,
+                                        zIndex: 1000
+                                    }}>
+                                        <Like></Like>
+                                    </Animated.View>
+                                    <Animated.View style={{
+                                        opacity: this.nopeOpacity,
+                                        transform: [{rotate: "30deg"}],
+                                        position: "absolute",
+                                        top: 50,
+                                        right: 40,
+                                        zIndex: 1000
+                                    }}>
+                                        <Nope></Nope>
+                                    </Animated.View>
+                                    <Image style={styles.image} source={{uri: el.image}}></Image>
+                                </Animated.View>
+                            )
+                        } else {
+                            return(
+                                <Animated.View style={styles.card} key={i}>
+                                    <Image style={styles.image} source={{uri: el.image}}></Image>
+                                </Animated.View>
+                            )
+                        }
                     }).reverse()}
                 </View>
             </View>
