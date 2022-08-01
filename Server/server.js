@@ -3,7 +3,7 @@ const app = express()
 const router = require("./modules/routes")
 require("dotenv").config();
 
-app.use(express.json()) // for parsing application/json
+app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 app.use("/api", router.router);
