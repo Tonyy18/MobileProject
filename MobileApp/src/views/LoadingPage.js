@@ -19,7 +19,8 @@ class LoadingPage extends Component {
             } else {
                 this.props.navigation.navigate("Authenticated")
             }
-        }).catch((err) => {
+        }).catch((error) => {
+            console.error(error);
             this.setState({
                 error: true,
                 text: "Services are currently offline\nPlease try again later"

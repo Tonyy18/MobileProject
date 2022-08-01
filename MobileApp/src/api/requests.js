@@ -9,10 +9,10 @@ function request(url, data) {
         if(token) {
             data["headers"]["authorization"] = "Bearer " + token;
         }
-        return fetch(url, data)
+        return fetch(Settings.url + url, data)
         .then((response) => {return response.json()})
         .then((json) => {return json})
-        .catch((error) => {console.error(err); throw error})
+        .catch((error) => {console.error(error); console.error("url: " + Settings.url + url); throw error})
     }).catch((error) => {
         throw error;
     })

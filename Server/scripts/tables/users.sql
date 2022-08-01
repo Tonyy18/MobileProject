@@ -4,5 +4,7 @@ CREATE TABLE IF NOT EXISTS users (
     password TEXT NOT NULL,
     first_name TEXT NOT NULL,
     last_name TEXT NOT NULL,
+    coordinates TEXT,
+    city TEXT,
     PRIMARY KEY(id)
 );

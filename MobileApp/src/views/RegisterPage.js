@@ -3,6 +3,7 @@ import {View, Text, StyleSheet, Image, Fetch} from "react-native";
 import {EmailInput, PasswordInput, NameInput, Button} from "../components/inputs"
 import {createUser} from "../api/user";
 import AlertBar from '../components/AlertBar';
+import {login} from "../api/auth";
 const email_validator = require("email-validator");
 
 const Title = () => {
@@ -72,8 +73,15 @@ class RegisterPage extends Component {
                 password: this.state.passwordText
             }).then((result) => {
                 if(result.code == 201) {
-                    this.setState({
-                        errorText: "User created"
+                    login({email: email, password:password})
+                    .then((result) => {
+                        if(result.code == 200) {
+                            this.props.navigation.navigate("Loading")
+                        } else {
+                            this.setState({
+                                errorText: result.data
+                            })
+                        }
                     })
                 } else {
                     this.setState({

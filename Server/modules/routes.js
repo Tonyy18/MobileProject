@@ -68,7 +68,7 @@ router.post("/users",  (req, res) => {
             return;
         }
         com.hash_password(req.body.password, (hash) => {
-            sql.query("insert into users(email,password) values('" + req.body.email + "', '" + hash + "')", function(results) {
+            sql.query("insert into users(email,password,first_name,last_name) values('" + req.body.email + "', '" + hash + "', '" + req.body.firstName + "', '" + req.body.lastName + "')", function(results) {
                 res.json(obj.created());
             })
         })

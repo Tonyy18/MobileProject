@@ -39,6 +39,7 @@ class LoginPage extends Component {
                 })
             }
         }).catch((err) => {
+            console.error(err)
             this.setState({alertText: "Services are offline"})
         }).finally(() => {
             this.setState({

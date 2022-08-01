@@ -1,8 +1,6 @@
 import React, {Component} from "react";
-import {View, Text, StyleSheet, Image, Fetch, Pressable, Alert} from "react-native";
+import {Alert} from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {Button} from "../components/inputs"
-import Settings from "../common/Settings"
 import { postRequest } from "./requests";
 import {ping} from "./server";
 
@@ -20,7 +18,7 @@ const getToken = async () => {
       return value
     } catch(e) {
       // error reading value
-      return null;
+      throw e;
     }
 }
 const isTokenSet = () => {
@@ -29,7 +27,7 @@ const isTokenSet = () => {
   }).catch((error) => {throw error;})
 }
 function login(data) {
-    return postRequest(Settings.url + "/api/authenticate", data).then((json) => {
+    return postRequest("/api/authenticate", data).then((json) => {
         if(json.code == 200) {
             return setToken(json.data).then(() => {
             	return json;
@@ -40,7 +38,7 @@ function login(data) {
               }
             })
         }
-
+        return json;
     }).catch((error) => {throw error});
 }
 function logout() {
@@ -51,10 +49,10 @@ function logout() {
 function isLoggedIn() {
     return isTokenSet().then((result) => {
       if(result) {
-        return ping().then((result) => {return result.code == 200}).catch((err) => {throw err});
+        return ping().then((result) => {return result.code == 200}).catch((error) => {throw error});
       }
       return result
-    })
+    }).catch((error) => {throw error})
 }
 
 class Authenticated extends Component {
