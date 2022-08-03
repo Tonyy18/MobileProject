@@ -28,7 +28,7 @@ class SwipingPage extends Authenticated {
         return (
             <View>
                 <View style={styles.topBar}>
-                    <Pressable style={styles.iconButton}>
+                    <Pressable style={styles.iconButton} onPress={() => {this.props.navigation.navigate("Settings")}}>
                         <UserIcon style={styles.topBarIcon}></UserIcon>
                     </Pressable>
                     <Logo style={styles.logo}></Logo>
