@@ -1,5 +1,5 @@
 import React, {Component, useEffect, useState} from "react";
-import {View, Text, StyleSheet, Image, Alert, Fetch} from "react-native";
+import {View, Text, StyleSheet, Image, Alert, StatusBar} from "react-native";
 import {isLoggedIn} from "../api/auth";
 import {getCurrentPosition} from "../api/geo";
 
@@ -39,6 +39,10 @@ class LoadingPage extends Component {
         }
         return (
             <View style={styles.container}>
+                <StatusBar
+                    backgroundColor="#4CABFF"
+                    barStyle="light-content"
+                />
                 {image}
                 <Text style={styles.text}>{this.state.text}</Text>
             </View>

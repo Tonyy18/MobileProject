@@ -20,6 +20,7 @@
     "@react-navigation/native-stack": "^6.7.0",
     "email-validator": "^2.0.4",
     "react-native": "^0.69.3",
+    "react-native-drag-sort": "^2.4.4",
     "react-native-fade-in-out": "^1.0.6",
     "react-native-reanimated": "^2.9.1",
     "react-native-redash": "^18.0.0",

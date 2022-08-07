@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {View, Text, StyleSheet, Image, ActivityIndicator, Alert} from "react-native";
+import {View, Text, StyleSheet, Image, ActivityIndicator, Alert, StatusBar} from "react-native";
 import Logo from "../components/Logo"
 import {EmailInput, PasswordInput, Button, WhiteButton} from "../components/inputs"
 import AlertBar from '../components/AlertBar';
@@ -56,6 +56,10 @@ class LoginPage extends Component {
     render() {
         return (
             <View>
+                <StatusBar
+                    backgroundColor="#4CABFF"
+                    barStyle="light-content"
+                />
                 <View style={styles.pageTop}>
                     <View style={styles.topContainer}>
                         <AlertBar visible={this.state.alertText != null} text={this.state.alertText} type="error"></AlertBar>

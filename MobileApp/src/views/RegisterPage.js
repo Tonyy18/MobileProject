@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {View, Text, StyleSheet, Image, Fetch} from "react-native";
+import {View, Text, StyleSheet, Image, StatusBar} from "react-native";
 import {EmailInput, PasswordInput, NameInput, Button} from "../components/inputs"
 import {createUser} from "../api/user";
 import AlertBar from '../components/AlertBar';
@@ -103,6 +103,10 @@ class RegisterPage extends Component {
     render() {
         return (
             <View style={styles.container}>
+                <StatusBar
+                    backgroundColor="#F1F1F1"
+                    barStyle="dark-content"
+                />
                 <AlertBar visible={this.state.errorText != null} text={this.state.errorText} type="notice"></AlertBar>
                 <View style={styles.content}>
                     <Title></Title>
