@@ -3,8 +3,8 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require('bcryptjs');
 const obj = require("./objects")
 const get_jwt = (payload) => {
-    //jwt.sign(payload, process.env.JWT_KEY, {expiresIn: "10000"});
-    let token = jwt.sign(payload, process.env.JWT_KEY);
+    //jwt.sign(payload, process.env.JWT_KEY, {expiresIn: "60"});
+    let token = jwt.sign(payload, process.env.JWT_KEY, {expiresIn: "60"});
     return token
 }
 const verify_jwt = (token, success = () =>{}, error = () => {}) => {
