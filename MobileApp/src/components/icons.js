@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faHeart, faBan, faCheck, faAngleLeft, faDoorOpen, faEnvelope, faLock, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faHeart, faBan, faCheck, faAngleLeft, faDoorOpen, faEnvelope, faLock, faUser } from "@fortawesome/free-solid-svg-icons";
 
 const UserIcon = (props) => {
     return <FontAwesomeIcon icon={faUser} {...props}></FontAwesomeIcon>
@@ -26,4 +26,7 @@ const BanIcon = (props) => {
 const HeartIcon = (props) => {
     return <FontAwesomeIcon icon={faHeart} {...props}></FontAwesomeIcon>
 }
-export {UserIcon, LockIcon, MailIcon, LogoutIcon, ArrowLeftIcon, CheckIcon, BanIcon, HeartIcon};
+const PlusIcon = (props) => {
+    return <FontAwesomeIcon icon={faPlus} {...props}></FontAwesomeIcon>
+}
+export {UserIcon, LockIcon, MailIcon, LogoutIcon, ArrowLeftIcon, CheckIcon, BanIcon, HeartIcon, PlusIcon};
